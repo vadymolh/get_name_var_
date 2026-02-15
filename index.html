@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Генератор варіанту</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 400px;
+      margin: 40px auto;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Отримати свій варіант</h2>
+
+  <input type="text" id="nameInput" placeholder="Введіть імʼя">
+  <button onclick="generateVariant()">Перейти до завдання</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    const alphabet = [
+      'а','б','в','г','ґ','д','е','є','ж','з','и','і','ї',
+      'й','к','л','м','н','о','п','р','с','т','у','ф',
+      'х','ц','ч','ш','щ','ь','ю','я'
+    ];
+
+    const links = [
+      "https://forms.gle/ZVgE19NtREGC76YC9",
+      "https://forms.gle/oRkppHeLyBhCiVEJ7",
+      "https://forms.gle/q5tENwZ4LdHbYxpv9"
+    ];
+
+    function letterValue(letter) {
+      const index = alphabet.indexOf(letter);
+      return index === -1 ? 0 : index + 1;
+    }
+
+    function pythagoreanNumber(num) {
+      while (num > 9) {
+        num = num
+          .toString()
+          .split('')
+          .reduce((sum, digit) => sum + Number(digit), 0);
+      }
+      return num;
+    }
+
+    function generateVariant() {
+      const input = document.getElementById('nameInput').value.toLowerCase();
+
+      if (!input.trim()) {
+        document.getElementById('result').textContent =
+          'Введіть імʼя';
+        return;
+      }
+
+      let sum = 0;
+      for (const char of input) {
+        sum += letterValue(char);
+      }
+
+      const pNumber = pythagoreanNumber(sum);
+      const variantIndex = (pNumber - 1) % 3; // 0,1,2
+
+      document.getElementById('result').textContent =
+        `Ваш номер: ${pNumber}. Відкриваємо ваш варіант…`;
+
+      // Невелика пауза для читабельності
+      setTimeout(() => {
+        window.location.href = links[variantIndex];
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
